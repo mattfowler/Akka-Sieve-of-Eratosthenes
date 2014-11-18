@@ -1,3 +1,3 @@
 package message
 
-case class PrimesResult(primes: List[Integer])
+case class PrimesResult(primes: List[Integer]) extends PrimeMessage
