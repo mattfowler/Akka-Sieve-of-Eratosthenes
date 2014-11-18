@@ -24,6 +24,7 @@ class EratosthenesWorker extends Actor {
       if (firstNonPrime < i*i) {
         firstNonPrime  = i*i
       }
+      firstNonPrime = if (firstNonPrime % 2 == 0) firstNonPrime + i else firstNonPrime
       for(nonPrime <- firstNonPrime to end by 2*i) {
         oddNumbers = oddNumbers diff mutable.ArraySeq(nonPrime)
       }
