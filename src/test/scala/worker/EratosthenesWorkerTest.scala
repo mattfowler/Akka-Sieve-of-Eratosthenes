@@ -39,6 +39,9 @@ class EratosthenesWorkerTest extends TestKit(ActorSystem()) with FlatSpecLike wi
     val Success(noPrimesResult: PrimesResult) = noPrimes.value.get
     noPrimesResult should be(PrimesResult(List()))
 
+    val oddEndNumber = eratosthenesActor ? CalculatePrimesMessage(2, 25)
+    val Success(oddEndNumberResult: PrimesResult) = oddEndNumber.value.get
+    oddEndNumberResult should be(PrimesResult(List(2, 3, 5, 7, 11, 13, 17, 19, 23)))
   }
 
   it should "throw an error if start is not less than end or numbers are negative" in {
