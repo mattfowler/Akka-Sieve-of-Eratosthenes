@@ -16,19 +16,22 @@ class EratosthenesWorker extends Actor {
     if(start < 1 || end < 1 || start > end) {
       throw new InvalidInputException("Start and end must be nonzero, positive and start must be less than end")
     }
-    var numbers = mutable.ArraySeq.tabulate(end - start + 1)(i => i  + start)
-    var primes: List[Int] = List()
+    val numbers = mutable.ArraySeq.tabulate(end - start + 1)(i => i + start)
+    var oddNumbers = numbers.filter(_ % 2 != 0)
 
-    while(numbers.length > 0) {
-      val nextPrime:Int = numbers.head
-      numbers = numbers.drop(1)
-      for(i <- nextPrime * nextPrime to end by nextPrime ) {
-        numbers = numbers diff mutable.ArraySeq(i)
+    for(i <- 3 to end by 2 if i*i < end) {
+      var firstNonPrime = ((start + i - 1) / i) * i
+      if (firstNonPrime < i*i) {
+        firstNonPrime  = i*i
       }
-      primes = primes :+ nextPrime
+      for(nonPrime <- firstNonPrime to end by 2*i) {
+        oddNumbers = oddNumbers diff mutable.ArraySeq(nonPrime)
+      }
     }
-
-    primes
+    if (start == 2) {
+      oddNumbers =  2 +: oddNumbers
+    }
+    oddNumbers.toList
   }
 
 }
