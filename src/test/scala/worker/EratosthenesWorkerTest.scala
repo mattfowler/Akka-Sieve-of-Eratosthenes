@@ -46,6 +46,10 @@ class EratosthenesWorkerTest extends TestKit(ActorSystem()) with FlatSpecLike wi
     val regression = eratosthenesActor ? CalculatePrimesMessage(50, 75)
     val Success(regressionResult: PrimesResult) = regression.value.get
     regressionResult should be(PrimesResult(List(53, 59, 61, 67, 71, 73)))
+
+    val first100kPrimes = eratosthenesActor ? CalculatePrimesMessage(2, 100000)
+    val Success(first100kPrimesResult: PrimesResult) = first100kPrimes.value.get
+    first100kPrimesResult.primes.length should be(9592)
   }
 
   it should "throw an error if start is not less than end or numbers are negative" in {
