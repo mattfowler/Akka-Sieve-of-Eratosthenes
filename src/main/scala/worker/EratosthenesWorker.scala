@@ -19,18 +19,16 @@ class EratosthenesWorker extends Actor {
     val numbers = mutable.ArrayBuffer.tabulate(end - start + 1)(i => i + start)
     var oddNumbers = numbers.filter(_ % 2 != 0)
 
-    for(i <- 3 to end by 2) {
-      if(i * i <= end) {
-        var firstNonPrime = ((start + i - 1) / i) * i
-        if (firstNonPrime < i * i) {
-          firstNonPrime = i * i
-        }
-
-        firstNonPrime = if (firstNonPrime % 2 == 0) firstNonPrime + i else firstNonPrime
-        for (nonPrime <- firstNonPrime to end by 2 * i) {
-          val index: Int = nonPrime - start
-          oddNumbers.update(index / 2, 0)
-        }
+    val intSqrt = Math.sqrt(end).toInt
+    for (i <- 3 to end by 2 if i <= intSqrt) {
+      var firstNonPrime = ((start + i - 1) / i) * i
+      if (firstNonPrime < i * i) {
+        firstNonPrime = i * i
+      }
+      firstNonPrime = if (firstNonPrime % 2 == 0) firstNonPrime + i else firstNonPrime
+      for (nonPrime <- firstNonPrime to end by 2 * i) {
+        val index: Int = nonPrime - start
+        oddNumbers.update(index / 2, 0)
       }
     }
     if (start == 2) {
